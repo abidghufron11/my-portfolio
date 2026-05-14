@@ -82,9 +82,9 @@ export default function Projects() {
               variants={fadeInUp}
               whileHover={{ y: -8, borderColor: "#FF6B35" }}
               onClick={() => setSelectedProject(p)}
-              className="group relative p-6 bg-dark-800/30 border border-white/10 rounded-xl overflow-hidden transition-all duration-300 cursor-pointer"
+              className="group relative p-6 bg-dark-800/30 border border-white/10 rounded-xl overflow-hidden cursor-pointer"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative z-10">
                 <h3 className="text-xl font-bold mb-2 group-hover:text-accent transition-colors">{p.title}</h3>
                 <p className="text-gray-400 text-sm mb-4 leading-relaxed">{p.description}</p>

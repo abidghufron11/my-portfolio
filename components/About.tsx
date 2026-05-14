@@ -37,7 +37,7 @@ export default function About() {
             key={i}
             variants={scaleIn}
             whileHover={{ y: -6, borderColor: "#FF6B35", boxShadow: "0 10px 30px rgba(255,107,53,0.12)" }}
-            className="p-6 bg-dark-800/30 border border-white/10 rounded-xl transition-all duration-300"
+            className="p-6 bg-dark-800/30 border border-white/10 rounded-xl"
           >
             <div className="text-accent mb-4">{skill.icon}</div>
             <h3 className="text-lg font-bold mb-3">{skill.name}</h3>
