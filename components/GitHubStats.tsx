@@ -26,7 +26,7 @@ export default function GitHubStats() {
   const [error, setError] = useState<string | null>(null);
 
   // GANTI DENGAN GITHUB USERNAME KAMU
-  const username = "abidghufron";
+  const username = "abidghufron11";
 
   useEffect(() => {
     const fetchGitHubStats = async () => {
