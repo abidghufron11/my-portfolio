@@ -105,7 +105,7 @@ export default function GitHubStats() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, amount: 0.3 }}
         className="text-center mb-12"
       >
         <h2 className="text-3xl md:text-4xl font-bold mb-4">GitHub <span className="text-accent">Stats</span></h2>
@@ -117,7 +117,7 @@ export default function GitHubStats() {
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ delay: 0.1 }}
           className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center"
         >
@@ -129,7 +129,7 @@ export default function GitHubStats() {
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ delay: 0.2 }}
           className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center"
         >
@@ -141,7 +141,7 @@ export default function GitHubStats() {
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ delay: 0.3 }}
           className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center"
         >
@@ -153,7 +153,7 @@ export default function GitHubStats() {
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ delay: 0.4 }}
           className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center"
         >
@@ -175,7 +175,7 @@ export default function GitHubStats() {
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -4, borderColor: "#FF6B35" }}
               className="p-5 bg-dark-800/30 border border-white/10 rounded-xl"
@@ -220,7 +220,7 @@ export default function GitHubStats() {
                   key={lang}
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, amount: 0.3 }}
                   transition={{ delay: index * 0.05 }}
                   className="px-4 py-2 bg-dark-800 border border-white/10 rounded-full text-sm text-gray-300"
                 >

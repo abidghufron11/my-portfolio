@@ -112,7 +112,7 @@ export default function Contact() {
           variants={fadeInUp} 
           initial="hidden" 
           whileInView="visible" 
-          viewport={{ once: true }} 
+          viewport={{ once: true, amount: 0.3 }} 
           className="space-y-5" 
           onSubmit={handleSubmit}
         >

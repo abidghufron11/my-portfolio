@@ -81,6 +81,7 @@ export default function Hero() {
           key={i}
           className={`hidden sm:block absolute ${pos} p-4 bg-accent rounded-xl pointer-events-none shadow-lg shadow-accent/40`}
           animate={{ y: [5, -15, 0], rotate: [0, 10, 0] }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 10, delay, repeat: Infinity, ease: "easeInOut" }}
         >
           <Icon size={28} className="text-black" />

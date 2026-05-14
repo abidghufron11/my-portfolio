@@ -1,9 +1,31 @@
 "use client";
+import { useEffect, useState } from "react";
 
 export default function GradientBackground() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouchDevice = 
+        'ontouchstart' in window || 
+        navigator.maxTouchPoints > 0 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+      setIsMobile(isTouchDevice);
+    };
+    checkMobile();
+  }, []);
+
+  // Jangan render gradient animasi di mobile (atau render versi statis)
+  if (isMobile) {
+    return (
+      <div className="fixed inset-0 pointer-events-none z-0 bg-dark-900" />
+    );
+  }
+
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* Blob 1 - Kiri Atas */}
       <div
         className="absolute rounded-full"
         style={{
@@ -17,7 +39,6 @@ export default function GradientBackground() {
         }}
       />
 
-      {/* Blob 2 - Kanan Bawah */}
       <div
         className="absolute rounded-full"
         style={{

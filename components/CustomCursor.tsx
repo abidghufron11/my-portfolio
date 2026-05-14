@@ -8,11 +8,21 @@ export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hint, setHint] = useState<CursorHint>(null);
   const [isHovering, setIsHovering] = useState(false);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Deteksi mobile di awal
+    const checkMobile = () => {
+      const isTouchDevice = 
+        'ontouchstart' in window || 
+        navigator.maxTouchPoints > 0 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+      setIsMobile(isTouchDevice);
+    };
 
-    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    checkMobile();
 
     const mouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
@@ -22,6 +32,8 @@ export default function CustomCursor() {
   }, []);
 
   useEffect(() => {
+    if (isMobile) return; // Jangan jalankan di mobile
+
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (target.closest('a[href]')) {
@@ -40,11 +52,13 @@ export default function CustomCursor() {
     };
     window.addEventListener("mouseover", handleMouseOver);
     return () => window.removeEventListener("mouseover", handleMouseOver);
-  }, []);
+  }, [isMobile]);
+
+  // Jangan render apapun di mobile
+  if (isMobile) return null;
 
   return (
     <>
-      {/* Main cursor dot */}
       <motion.div
         className="fixed w-3 h-3 bg-accent rounded-full pointer-events-none z-[9999] mix-blend-difference"
         style={{ left: mousePosition.x - 6, top: mousePosition.y - 6 }}
@@ -52,7 +66,6 @@ export default function CustomCursor() {
         transition={{ type: "spring", stiffness: 500, damping: 28 }}
       />
 
-      {/* Hint text - POSISI LANGSUNG, TANPA ANIMASI TERBANG */}
       <AnimatePresence>
         {hint && (
           <motion.div
@@ -73,7 +86,6 @@ export default function CustomCursor() {
         )}
       </AnimatePresence>
 
-      {/* Outer ring */}
       <motion.div
         className="fixed w-10 h-10 border border-accent/50 rounded-full pointer-events-none z-[9997]"
         style={{ left: mousePosition.x - 20, top: mousePosition.y - 20 }}
