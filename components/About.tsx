@@ -13,25 +13,14 @@ const skills = [
 export default function About() {
   return (
     <section id="about" className="py-24 px-6 max-w-6xl mx-auto">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-center mb-16"
-      >
+      <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">About <span className="text-accent">Me</span></h2>
         <p className="text-gray-400 max-w-2xl mx-auto">
           I'm Abid Ghufron F., a 23-year-old Computer Science student passionate about bridging the gap between complex algorithms and user-centric design. I thrive on building scalable systems and exploring the frontiers of AI.
         </p>
       </motion.div>
 
-      <motion.div 
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true}}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-      >
+      <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {skills.map((skill, i) => (
           <motion.div
             key={i}

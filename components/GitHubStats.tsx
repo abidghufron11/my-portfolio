@@ -130,7 +130,7 @@ export default function GitHubStats() {
           initial={{ scale: 0.9, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
+          transition={{ delay: 0.2 }}
           className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center"
         >
           <Star className="mx-auto mb-2 text-yellow-500" size={32} />
@@ -142,7 +142,7 @@ export default function GitHubStats() {
           initial={{ scale: 0.9, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
+          transition={{ delay: 0.3 }}
           className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center"
         >
           <GitFork className="mx-auto mb-2 text-blue-500" size={32} />
@@ -154,7 +154,7 @@ export default function GitHubStats() {
           initial={{ scale: 0.9, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
+          transition={{ delay: 0.4 }}
           className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center"
         >
           <Code2 className="mx-auto mb-2 text-green-500" size={32} />
