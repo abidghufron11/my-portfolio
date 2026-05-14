@@ -1,9 +1,10 @@
-import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
-const resend = new Resend(process.env.re_6zz8sHue_JQzoXJCr1V9TTVidgZDo2r5k);
-
 export async function POST(request: Request) {
+  // ✅ Lazy-load Resend hanya saat function dipanggil (runtime)
+  const { Resend } = await import("resend");
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
   try {
     const { name, email, message } = await request.json();
 
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     await resend.emails.send({
-      from: "Portfolio Contact <onboarding@resend.dev>", // Ganti nanti saat domain diverifikasi
+      from: "Portfolio Contact <onboarding@resend.dev>",
       to: ["abid.ghufron@student.ac.id"], // Ganti dengan email kamu
       subject: `New Portfolio Message from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
