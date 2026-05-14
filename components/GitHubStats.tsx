@@ -26,12 +26,11 @@ export default function GitHubStats() {
   const [error, setError] = useState<string | null>(null);
 
   // GANTI DENGAN GITHUB USERNAME KAMU
-  const username = "abidghufron11";
+  const username = "abidghufron";
 
   useEffect(() => {
     const fetchGitHubStats = async () => {
       try {
-        // Fetch repos
         const reposRes = await fetch(
           `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
         );
@@ -40,11 +39,9 @@ export default function GitHubStats() {
         
         const repos: GitHubRepo[] = await reposRes.json();
         
-        // Calculate stats
         const totalStars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
         const totalForks = repos.reduce((acc, repo) => acc + repo.forks_count, 0);
         
-        // Count languages
         const languages: Record<string, number> = {};
         repos.forEach(repo => {
           if (repo.language) {
@@ -52,7 +49,6 @@ export default function GitHubStats() {
           }
         });
 
-        // Sort repos by stars
         const topRepos = repos
           .sort((a, b) => b.stargazers_count - a.stargazers_count)
           .slice(0, 3);
@@ -105,7 +101,7 @@ export default function GitHubStats() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
+        viewport={{ once: true }}
         className="text-center mb-12"
       >
         <h2 className="text-3xl md:text-4xl font-bold mb-4">GitHub <span className="text-accent">Stats</span></h2>
@@ -117,7 +113,7 @@ export default function GitHubStats() {
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true }}
           transition={{ delay: 0.1 }}
           className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center"
         >
@@ -129,7 +125,7 @@ export default function GitHubStats() {
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true }}
           transition={{ delay: 0.2 }}
           className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center"
         >
@@ -141,7 +137,7 @@ export default function GitHubStats() {
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true }}
           transition={{ delay: 0.3 }}
           className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center"
         >
@@ -153,7 +149,7 @@ export default function GitHubStats() {
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true }}
           transition={{ delay: 0.4 }}
           className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center"
         >
@@ -175,10 +171,10 @@ export default function GitHubStats() {
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -4, borderColor: "#FF6B35" }}
-              className="p-5 bg-dark-800/30 border border-white/10 rounded-xl"
+              className="p-5 bg-dark-800/30 border border-white/10 rounded-xl transition-all"
             >
               <div className="flex items-start justify-between mb-2">
                 <h4 className="font-bold text-white text-lg">{repo.name}</h4>
@@ -220,7 +216,7 @@ export default function GitHubStats() {
                   key={lang}
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, amount: 0.3 }}
+                  viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
                   className="px-4 py-2 bg-dark-800 border border-white/10 rounded-full text-sm text-gray-300"
                 >
