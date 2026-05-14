@@ -31,6 +31,7 @@ export default function GitHubStats() {
   useEffect(() => {
     const fetchGitHubStats = async () => {
       try {
+        // Fetch repos
         const reposRes = await fetch(
           `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
         );
@@ -39,9 +40,11 @@ export default function GitHubStats() {
         
         const repos: GitHubRepo[] = await reposRes.json();
         
+        // Calculate stats
         const totalStars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
         const totalForks = repos.reduce((acc, repo) => acc + repo.forks_count, 0);
         
+        // Count languages
         const languages: Record<string, number> = {};
         repos.forEach(repo => {
           if (repo.language) {
@@ -49,6 +52,7 @@ export default function GitHubStats() {
           }
         });
 
+        // Sort repos by stars
         const topRepos = repos
           .sort((a, b) => b.stargazers_count - a.stargazers_count)
           .slice(0, 3);
@@ -174,7 +178,7 @@ export default function GitHubStats() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -4, borderColor: "#FF6B35" }}
-              className="p-5 bg-dark-800/30 border border-white/10 rounded-xl transition-all"
+              className="p-5 bg-dark-800/30 border border-white/10 rounded-xl"
             >
               <div className="flex items-start justify-between mb-2">
                 <h4 className="font-bold text-white text-lg">{repo.name}</h4>
