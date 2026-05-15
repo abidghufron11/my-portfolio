@@ -1,7 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
-import { GitBranch, Star, GitFork, Code2, Loader2 } from "lucide-react";
+import { GitBranch, Star, GitFork, Code2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import Skeleton from "./Skeleton";
 
 interface GitHubRepo {
   name: string;
@@ -27,54 +28,161 @@ export default function GitHubStats() {
   const [isMobile, setIsMobile] = useState(false);
   const username = "abidghufron11";
 
+  // Deteksi mobile dengan fallback yang aman
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
+    const checkMobile = () => {
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth < 768;
+      setIsMobile(isTouch || isSmallScreen);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Fetch GitHub data
   useEffect(() => {
     const fetchGitHubStats = async () => {
       try {
-        const reposRes = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`);
+        const reposRes = await fetch(
+          `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
+        );
         if (!reposRes.ok) throw new Error("Failed to fetch GitHub data");
+        
         const repos: GitHubRepo[] = await reposRes.json();
         
         const totalStars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
         const totalForks = repos.reduce((acc, repo) => acc + repo.forks_count, 0);
+        
         const languages: Record<string, number> = {};
-        repos.forEach(repo => { if (repo.language) languages[repo.language] = (languages[repo.language] || 0) + 1; });
-        const topRepos = repos.sort((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 3);
+        repos.forEach(repo => {
+          if (repo.language) {
+            languages[repo.language] = (languages[repo.language] || 0) + 1;
+          }
+        });
 
-        setStats({ totalRepos: repos.length, totalStars, totalForks, topLanguages: languages, topRepos });
+        const topRepos = repos
+          .sort((a, b) => b.stargazers_count - a.stargazers_count)
+          .slice(0, 3);
+
+        setStats({
+          totalRepos: repos.length,
+          totalStars,
+          totalForks,
+          topLanguages: languages,
+          topRepos
+        });
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
       } finally {
         setLoading(false);
       }
     };
+
     fetchGitHubStats();
   }, [username]);
 
-  const scrollProps = isMobile ? {} : { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } };
-  const scaleProps = isMobile ? {} : { initial: { scale: 0.9, opacity: 0 }, whileInView: { scale: 1, opacity: 1 }, viewport: { once: true } };
+  // Conditional props: animasi hanya aktif di desktop
+  const getScrollProps = () => {
+    if (isMobile) return {};
+    return {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true }
+    };
+  };
 
-  if (loading) return (
-    <section className="py-16 px-6 max-w-6xl mx-auto"><div className="text-center"><h2 className="text-3xl font-bold mb-8">GitHub <span className="text-accent">Stats</span></h2><div className="flex items-center justify-center gap-2 text-gray-400"><Loader2 className="animate-spin" size={20} /><span>Loading GitHub stats...</span></div></div></section>
-  );
-  if (error) return (
-    <section className="py-16 px-6 max-w-6xl mx-auto"><div className="text-center text-red-400"><p>Failed to load GitHub stats: {error}</p></div></section>
-  );
+  const getScaleProps = (delay: number) => {
+    if (isMobile) return {};
+    return {
+      initial: { scale: 0.9, opacity: 0 },
+      whileInView: { scale: 1, opacity: 1 },
+      viewport: { once: true },
+      transition: { delay }
+    };
+  };
+
+  // ✅ LOADING STATE DENGAN SKELETON
+  if (loading) {
+    return (
+      <section className="py-16 px-6 max-w-6xl mx-auto">
+        {/* Heading Skeleton */}
+        <div className="text-center mb-12">
+          <Skeleton variant="title" className="mx-auto mb-4 w-64" />
+          <Skeleton variant="text" className="mx-auto w-96" />
+        </div>
+
+        {/* Stats Overview Skeleton */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center space-y-4">
+              <Skeleton variant="circle" className="w-8 h-8 mx-auto" />
+              <Skeleton variant="text" className="w-16 mx-auto h-8" />
+              <Skeleton variant="text" className="w-24 mx-auto" />
+            </div>
+          ))}
+        </div>
+
+        {/* Top Repositories Skeleton */}
+        <div className="mb-12">
+          <Skeleton variant="text" className="w-48 mb-6" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="p-5 bg-dark-800/30 border border-white/10 rounded-xl space-y-4">
+                <div className="flex items-start justify-between">
+                  <Skeleton variant="text" className="w-3/4 h-6" />
+                  <Skeleton variant="circle" className="w-5 h-5" />
+                </div>
+                <Skeleton count={2} />
+                <div className="flex items-center gap-4 mt-4">
+                  <Skeleton variant="tag" className="w-20" />
+                  <Skeleton variant="tag" className="w-16" />
+                  <Skeleton variant="tag" className="w-16" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Languages Skeleton */}
+        <div>
+          <Skeleton variant="text" className="w-56 mb-6" />
+          <div className="flex flex-wrap gap-2">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <Skeleton key={i} variant="tag" className="w-24" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <section className="py-16 px-6 max-w-6xl mx-auto">
+        <div className="text-center text-red-400">
+          <p>Failed to load GitHub stats: {error}</p>
+        </div>
+      </section>
+    );
+  }
+
   if (!stats) return null;
 
   return (
     <section className="py-16 px-6 max-w-6xl mx-auto">
-      <motion.div {...scrollProps} className="text-center mb-12">
+      {/* Section Heading */}
+      <motion.div 
+        {...getScrollProps()} 
+        className="text-center mb-12"
+      >
         <h2 className="text-3xl md:text-4xl font-bold mb-4">GitHub <span className="text-accent">Stats</span></h2>
         <p className="text-gray-400">My open source contributions and projects</p>
       </motion.div>
 
+      {/* Stats Overview Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
         {[
           { icon: <GitBranch />, val: stats.totalRepos, label: "Repositories", delay: 0.1 },
@@ -82,7 +190,11 @@ export default function GitHubStats() {
           { icon: <GitFork />, val: stats.totalForks, label: "Forks", delay: 0.3 },
           { icon: <Code2 />, val: Object.keys(stats.topLanguages).length, label: "Languages", delay: 0.4 },
         ].map((item, i) => (
-          <motion.div key={i} {...scaleProps} transition={isMobile ? {} : { delay: item.delay }} className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center">
+          <motion.div 
+            key={i} 
+            {...getScaleProps(item.delay)} 
+            className="p-6 bg-dark-800/30 border border-white/10 rounded-xl text-center"
+          >
             <div className="text-accent mx-auto mb-2">{item.icon}</div>
             <div className="text-3xl font-bold text-white">{item.val}</div>
             <div className="text-sm text-gray-400">{item.label}</div>
@@ -90,6 +202,7 @@ export default function GitHubStats() {
         ))}
       </div>
 
+      {/* Top Repositories */}
       <div className="mb-12">
         <h3 className="text-xl font-bold mb-6">Top Repositories</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -99,7 +212,7 @@ export default function GitHubStats() {
               href={repo.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              {...scrollProps}
+              {...getScrollProps()}
               transition={isMobile ? {} : { delay: index * 0.1 }}
               whileHover={!isMobile ? { y: -4, borderColor: "#FF6B35" } : {}}
               className="p-5 bg-dark-800/30 border border-white/10 rounded-xl"
@@ -108,33 +221,51 @@ export default function GitHubStats() {
                 <h4 className="font-bold text-white text-lg">{repo.name}</h4>
                 <GitBranch size={18} className="text-gray-400" />
               </div>
-              <p className="text-gray-400 text-sm mb-4 line-clamp-2">{repo.description || "No description"}</p>
+              <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                {repo.description || "No description"}
+              </p>
               <div className="flex items-center gap-4 text-sm">
-                {repo.language && <span className="flex items-center gap-1 text-gray-300"><span className="w-2 h-2 rounded-full bg-blue-500" />{repo.language}</span>}
-                <span className="flex items-center gap-1 text-gray-400"><Star size={14} />{repo.stargazers_count}</span>
-                <span className="flex items-center gap-1 text-gray-400"><GitFork size={14} />{repo.forks_count}</span>
+                {repo.language && (
+                  <span className="flex items-center gap-1 text-gray-300">
+                    <span className="w-2 h-2 rounded-full bg-blue-500" />
+                    {repo.language}
+                  </span>
+                )}
+                <span className="flex items-center gap-1 text-gray-400">
+                  <Star size={14} />
+                  {repo.stargazers_count}
+                </span>
+                <span className="flex items-center gap-1 text-gray-400">
+                  <GitFork size={14} />
+                  {repo.forks_count}
+                </span>
               </div>
             </motion.a>
           ))}
         </div>
       </div>
 
+      {/* Most Used Languages */}
       {Object.keys(stats.topLanguages).length > 0 && (
         <div>
           <h3 className="text-xl font-bold mb-6">Most Used Languages</h3>
           <div className="flex flex-wrap gap-2">
-            {Object.entries(stats.topLanguages).sort((a, b) => b[1] - a[1]).map(([lang, count], index) => (
-              <motion.span
-                key={lang}
-                initial={!isMobile ? { opacity: 0, scale: 0.8 } : {}}
-                whileInView={!isMobile ? { opacity: 1, scale: 1 } : {}}
-                viewport={!isMobile ? { once: true } : {}}
-                transition={!isMobile ? { delay: index * 0.05 } : {}}
-                className="px-4 py-2 bg-dark-800 border border-white/10 rounded-full text-sm text-gray-300"
-              >
-                {lang} <span className="text-accent">({count})</span>
-              </motion.span>
-            ))}
+            {Object.entries(stats.topLanguages)
+              .sort((a, b) => b[1] - a[1])
+              .map(([lang, count], index) => (
+                <motion.span
+                  key={lang}
+                  {...(isMobile ? {} : {
+                    initial: { opacity: 0, scale: 0.8 },
+                    whileInView: { opacity: 1, scale: 1.05 },
+                    viewport: { once: true },
+                    transition: { delay: index * 0.05 }
+                  })}
+                  className="px-4 py-2 bg-dark-800 border border-white/10 rounded-full text-sm text-gray-300"
+                >
+                  {lang} <span className="text-accent">({count})</span>
+                </motion.span>
+              ))}
           </div>
         </div>
       )}

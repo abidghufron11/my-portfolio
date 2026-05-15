@@ -67,3 +67,150 @@ input, textarea, button, select { font-family: inherit; }
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
+
+/* Fallback: Paksa hide cursor di semua perangkat sentuh */
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor-root { display: none !important; }
+  body { cursor: auto !important; }
+}
+
+/* ========================================
+   ACCESSIBILITY IMPROVEMENTS
+   ======================================== */
+
+/* Focus visible untuk keyboard navigation */
+*:focus-visible {
+  outline: none !important;
+}
+
+/* Remove focus outline untuk mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .text-gray-400 {
+    color: #ffffff !important;
+  }
+  .border-white\/10 {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+@media print {
+  /* Hide non-essential elements */
+  nav,
+  footer,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Reset background */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Ensure text is readable */
+  .text-gray-400 {
+    color: #333 !important;
+  }
+
+  /* Remove animations */
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Adjust layout for print */
+  section {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure links are visible */
+  a {
+    color: #0066cc !important;
+    text-decoration: underline !important;
+  }
+
+  /* Print-friendly cards */
+  .bg-dark-800\/30,
+  .bg-dark-900 {
+    background: white !important;
+    border: 1px solid #ddd !important;
+  }
+}
+
+/* ========================================
+   SKELETON LOADING ANIMATION
+   ======================================== */
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+/* Skeleton Shimmer Animation */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Ensure reduced motion respects user preference */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes skeleton-shimmer {
+    0%, 100% { background-position: 0 0; }
+  }
+}
+/* Preloader Exit Transition */
+.preloader-exit {
+  pointer-events: none;
+}
+
+/* Prevent scroll during preloader */
+body:has(.preloader-active) {
+  overflow: hidden;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

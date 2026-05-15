@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -26,10 +26,25 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold tracking-tight hover:text-accent transition-colors">
-          abid<span className="text-accent">.Ghufron</span>
-        </Link>
+        
+        {/* LEFT SIDE: Logo + Search (Grouped Together) */}
+        <div className="flex items-center gap-4">
+          {/* Logo */}
+          <Link href="/" className="text-xl font-bold tracking-tight hover:text-accent transition-colors">
+            abid<span className="text-accent">.Ghufron</span>
+          </Link>
 
+          {/* Search Button - Right Next to Logo */}
+          <button 
+            onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { ctrlKey: true, key: "k" }))}
+            className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-md text-xs text-gray-400 hover:text-white hover:border-accent/50 transition-colors"
+          >
+            <Search size={14} />
+            <span className="font-mono">Ctrl+K</span>
+          </button>
+        </div>
+
+        {/* RIGHT SIDE: Navigation Links */}
         <div className="hidden md:flex items-center gap-8">
           {links.map((link) => (
             <Link
@@ -50,11 +65,13 @@ export default function Navbar() {
           </motion.button>
         </div>
 
+        {/* Mobile Menu Toggle */}
         <button className="md:hidden text-gray-300" onClick={() => setMobileOpen(!mobileOpen)}>
           {mobileOpen ? <X /> : <Menu />}
         </button>
       </div>
 
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div

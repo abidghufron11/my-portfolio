@@ -4,6 +4,10 @@ import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import GradientBackground from "@/components/GradientBackground";
 import ScrollProgress from "@/components/ScrollProgress";
+import TerminalOverlay from "@/components/TerminalOverlay";
+import CommandPalette from "@/components/CommandPalette";
+import LighthouseBadge from "@/components/LighthouseBadge";
+import Preloader from "@/components/Preloader";
 
 const courier = Courier_Prime({
   weight: ['400', '700'],
@@ -46,11 +50,16 @@ export default function RootLayout({
   return (
     <html lang="id" className="dark">
       <body className={`${courier.variable} font-mono antialiased text-white relative`}>
-        <ScrollProgress />
-        <GradientBackground />
-        
-        <CustomCursor />
-        {children}
+        <Preloader>
+          <ScrollProgress />
+          <GradientBackground />
+
+          <CustomCursor />
+          <CommandPalette />
+          <LighthouseBadge />
+          {children}
+          <TerminalOverlay />
+        </Preloader>
       </body>
     </html>
   );
