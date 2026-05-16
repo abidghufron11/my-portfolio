@@ -22,9 +22,9 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
         });
       }, 100);
 
-      // Durasi minimal 5 detik
+      // Durasi minimal 2 detik
       const startTime = Date.now();
-      const minDuration = 5000;
+      const minDuration = 2000;
 
       const finishLoading = () => {
         const timeElapsed = Date.now() - startTime;
@@ -97,7 +97,7 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
               />
             </div>
 
-            <p className="text-gray-500 text-sm font-mono mb-8 relative z-10 tracking-wider">SYSTEM INITIALIZING</p>
+            <p className="text-gray-300 text-sm font-mono mb-8 relative z-10 tracking-wider">SYSTEM INITIALIZING</p>
 
             {/* Progress Bar */}
             <div className="w-64 h-1.5 bg-white/10 rounded-full overflow-hidden mb-4 relative z-10">

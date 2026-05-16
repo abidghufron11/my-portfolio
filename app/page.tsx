@@ -3,7 +3,7 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
 import GitHubStats from "@/components/GitHubStats";
-import LogoLoop from "@/components/LogoLoop";
+import TechStack from "@/components/TechStack";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -38,7 +38,7 @@ export default function Home() {
         <About />
         <Projects />
         <GitHubStats />
-        <LogoLoop />
+        <TechStack />
         <Contact />
         <Footer />
       </main></>
