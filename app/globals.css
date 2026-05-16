@@ -17,17 +17,31 @@ html, body {
 :root {
   --grid-color: rgba(221, 221, 221, 0.035);
   --grid-size: 50px;
+  --focus-accent: #FF6B35;
+  /* Light theme defaults */
+  --bg: #ffffff;
+  --bg-grid: rgba(0,0,0,0.03);
+  --text: #111827;
+  --muted: #6b7280;
 }
 
 body {
-  background-color: #050505;
+  background-color: var(--bg);
   background-image: 
     linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
   background-size: var(--grid-size) var(--grid-size);
   background-attachment: fixed;
-  color: #e5e5e5;
+  color: var(--text);
   cursor: none;
+}
+
+/* Dark theme tokens */
+html.dark {
+  --bg: #050505;
+  --bg-grid: rgba(221, 221, 221, 0.035);
+  --text: #e5e5e5;
+  --muted: #9ca3af;
 }
 
 html { 
@@ -79,12 +93,14 @@ input, textarea, button, select { font-family: inherit; }
    ======================================== */
 
 /* Focus visible untuk keyboard navigation */
-*:focus-visible {
-  outline: none !important;
+:focus-visible {
+  outline: 2px solid var(--focus-accent) !important;
+  outline-offset: 2px !important;
+  border-radius: 6px;
 }
 
 /* Remove focus outline untuk mouse users */
-*:focus:not(:focus-visible) {
+:focus:not(:focus-visible) {
   outline: none;
 }
 
@@ -213,4 +229,19 @@ body:has(.preloader-active) {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+/* Force visible on touch devices to bypass Framer Motion viewport bugs */
+@media (hover: none) and (pointer: coarse) {
+  [data-framer-motion-component] {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+  }
+}
+/* PixelBlast container */
+.pixel-blast-container {
+  position: fixed;
+  inset: 0;
+  z-index: -0; /* place behind main content */
+  pointer-events: none;
 }

@@ -29,7 +29,7 @@ export default function TypingHeadline() {
   const secondPart = words.slice(3).join(" ");
 
   return (
-    <h1 className="text-5xl md:text-7xl font-bold leading-[1.15] mb-6 tracking-tight min-h-[160px] relative">
+    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight sm:leading-[1.15] mb-6 tracking-tight min-h-auto sm:min-h-[120px] md:min-h-[160px] relative">
       <span className="text-white">{firstPart}{firstPart && " "}</span>
       <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-orange-200">
         {secondPart}
