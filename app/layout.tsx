@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Courier_Prime } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import CustomCursor from "@/components/CustomCursor";
 import GradientBackground from "@/components/GradientBackground";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -60,6 +61,7 @@ export default function RootLayout({
           {children}
           <TerminalOverlay />
         </Preloader>
+        <Analytics />
       </body>
     </html>
   );
